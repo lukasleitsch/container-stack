@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  app:
+    image: erikvl87/languagetool
+    restart: unless-stopped
+    volumes:
+      - ./ngrams:/ngrams
+    expose:
+      - '8010'
+    environment:
+      Java_Xms: 512m
+      Java_Xmx: 1g
+      langtool_languageModel: /ngrams
+      VIRTUAL_HOST: $HOST
+      VIRTUAL_PORT: 8010
+      LETSENCRYPT_HOST: $HOST
+      LETSENCRYPT_EMAIL: $EMAIL
+    networks:
+      - proxy
+      - default
+
+networks:
+  proxy:
+    external:
+      name: nginx-proxy
