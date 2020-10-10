@@ -14,3 +14,6 @@ languagetool/ngrams/*
 freshrss/backups/*
 !freshrss/backups/.gitkeep
 freshrss/data
+
+hakatime/backups/*
+!hakatime/backups/.gitkeep
