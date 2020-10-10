@@ -1,0 +1,11 @@
+.env
+
+proxy/nginx-proxy
+proxy/data/nginx/*
+!proxy/data/nginx/my_proxy.conf
+proxy/data/nginx-proxy-certs
+
+gitlab/backups
+gitlab/data
+
+languagetool/ngrams
