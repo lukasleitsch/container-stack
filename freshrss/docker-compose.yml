@@ -17,7 +17,7 @@ services:
       - default
 
   db:
-    image: postgres:13
+    image: postgres:13-alpine
     restart: unless-stopped
     ports:
       - 127.0.0.1:5432:5432
