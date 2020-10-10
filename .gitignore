@@ -8,7 +8,9 @@ proxy/data/nginx-proxy-certs
 gitlab/backups
 gitlab/data
 
-languagetool/ngrams
+languagetool/ngrams/*
+!languagetool/ngrams/.gitkeep
 
-freshrss/backups
+freshrss/backups/*
+!freshrss/backups/.gitkeep
 freshrss/data
