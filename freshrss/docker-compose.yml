@@ -1,0 +1,38 @@
+version: '3.5'
+
+services:
+  app:
+    image: freshrss/freshrss:latest
+    restart: unless-stopped
+    expose:
+      - 80
+    volumes:
+      - "./data/fresh-rss:/var/www/FreshRSS/data"
+    environment:
+      - CRON_MIN=*/20
+      - VIRTUAL_HOST=$HOST
+      - LETSENCRYPT_HOST=$HOST
+    networks:
+      - proxy
+      - default
+
+  db:
+    image: postgres:13
+    restart: unless-stopped
+    ports:
+      - 127.0.0.1:5432:5432
+    volumes:
+      - "freshrss-db:/var/lib/postgresql/data"
+      - "./backups:/backups"
+    environment:
+      - POSTGRES_USER=$DB_USER
+      - POSTGRES_PASSWORD=$DB_PASSWORD
+      - POSTGRES_DB=$DB_DATABASE
+
+volumes:
+  freshrss-db:
+
+networks:
+  proxy:
+    external:
+      name: nginx-proxy
