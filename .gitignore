@@ -17,3 +17,5 @@ freshrss/data
 
 hakatime/backups/*
 !hakatime/backups/.gitkeep
+
+ciao/data
