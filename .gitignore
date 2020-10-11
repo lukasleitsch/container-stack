@@ -19,3 +19,5 @@ hakatime/backups/*
 !hakatime/backups/.gitkeep
 
 ciao/data
+
+healthchecks/data/

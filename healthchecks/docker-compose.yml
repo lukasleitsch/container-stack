@@ -1,0 +1,27 @@
+version: "2.1"
+services:
+  healthchecks:
+    image: linuxserver/healthchecks
+    container_name: healthchecks
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - SITE_ROOT=https://$HOST
+      - SITE_NAME=HealthChecks
+      - SUPERUSER_EMAIL=$SUPERUSER_EMAIL
+      - SUPERUSER_PASSWORD=$SUPERUSER_PASSWORD
+      - REGISTRATION_OPEN=False
+      - VIRTUAL_HOST=$HOST
+      - VIRTUAL_PORT=8000
+      - LETSENCRYPT_HOST=$HOST
+    volumes:
+      - ./data:/config
+    restart: unless-stopped
+    networks:
+      - proxy
+      - default
+
+networks:
+  proxy:
+    external:
+      name: nginx-proxy
