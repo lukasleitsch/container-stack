@@ -1,0 +1,25 @@
+version: '3.7'
+
+services:
+  web:
+    image: privatebin/nginx-fpm-alpine
+    volumes:
+      - privatebin-data:/srv/data
+    expose:
+      - 8080
+    restart: unless-stopped
+    environment:
+      VIRTUAL_HOST: $HOST
+      VIRTUAL_PORT: 8080
+      LETSENCRYPT_HOST: $HOST
+    networks:
+      - proxy
+      - default
+
+volumes:
+  privatebin-data:
+
+networks:
+  proxy:
+    external:
+      name: nginx-proxy
