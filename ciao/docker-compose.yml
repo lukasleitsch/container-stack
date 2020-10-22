@@ -3,6 +3,7 @@ services:
   ciao:
     image: brotandgames/ciao
     container_name: ciao
+    restart: unless-stopped
     environment:
       SECRET_KEY_BASE: $SECRET
       TIME_ZONE: Europe/Berlin

@@ -3,6 +3,7 @@ services:
   app:
     container_name: hakatime
     image: mujx/hakatime:latest
+    restart: unless-stopped
     environment:
       # DB settings.
       HAKA_DB_HOST: db
@@ -27,6 +28,7 @@ services:
   db:
     container_name: haka_db
     image: postgres:13-alpine
+    restart: unless-stopped
     environment:
       POSTGRES_DB: $DB_NAME
       POSTGRES_PASSWORD: $DB_PASSWORD
