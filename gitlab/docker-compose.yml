@@ -95,6 +95,7 @@ services:
   docker-proxy:
     container_name: gitlab-docker-proxy
     image: registry:2
+    restart: always
     environment:
       REGISTRY_PROXY_REMOTEURL: 'https://registry-1.docker.io'
     ports:
