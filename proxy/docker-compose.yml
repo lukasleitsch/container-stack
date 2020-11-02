@@ -1,10 +1,7 @@
 version: '3.5'
 services:
   nginx-proxy:
-    #image: jwilder/nginx-proxy:alpine
-    build: 
-      context: ./nginx-proxy
-      dockerfile: Dockerfile.alpine
+    image: jwilder/nginx-proxy:alpine
     container_name: nginx-proxy
     restart: always
     network_mode: 'host'
