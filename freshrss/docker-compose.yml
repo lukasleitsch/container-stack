@@ -8,6 +8,8 @@ services:
       - 80
     volumes:
       - "./data/fresh-rss:/var/www/FreshRSS/data"
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
     environment:
       - CRON_MIN=*/20
       - VIRTUAL_HOST=$HOST
