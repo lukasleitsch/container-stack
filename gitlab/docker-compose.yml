@@ -48,6 +48,7 @@ services:
         nginx['listen_port'] = 80
         nginx['listen_https'] = false
         nginx['redirect_http_to_https'] = false
+        nginx['hsts_max_age'] = 0
 
         registry_external_url "https://$REGISTRY_HOST"
         gitlab_rails['gitlab_default_projects_features_container_registry'] = false
@@ -71,6 +72,9 @@ services:
       - "$CERTS_PATH/$REGISTRY_HOST/key.pem:/etc/gitlab/ssl/$REGISTRY_HOST.key:ro"
       - "/etc/timezone:/etc/timezone:ro"
       - "/etc/localtime:/etc/localtime:ro"
+    networks:
+      - default
+      - proxy
 
   runner:
     container_name: gitlab-runner
@@ -78,6 +82,8 @@ services:
     volumes:
       - "./data/runner:/etc/gitlab-runner"
     restart: always
+    networks:
+      - runner
 
   minio:
     container_name: gitlab-minio
@@ -130,6 +136,7 @@ volumes:
   gitlab-registry-config:
 
 networks:
-  default:
+  proxy:
     external:
       name: nginx-proxy
+  runner:
