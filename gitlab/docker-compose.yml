@@ -2,7 +2,7 @@ version: '3'
 services:
   web:
     image: 'gitlab/gitlab-ce:latest'
-    restart: always
+    restart: unless-stopped
     hostname: $HOST
     container_name: gitlab
     environment:
@@ -81,14 +81,14 @@ services:
     image: mawalu/hetzner-gitlab-runner:latest
     volumes:
       - "./data/runner:/etc/gitlab-runner"
-    restart: always
+      restart: unless-stopped
     networks:
       - runner
 
   minio:
     container_name: gitlab-minio
     image: minio/minio:latest
-    restart: always
+    restart: unless-stopped
     ports:
       - 10.0.0.2:9000:9000
     volumes:
@@ -101,7 +101,7 @@ services:
   docker-proxy:
     container_name: gitlab-docker-proxy
     image: registry:2
-    restart: always
+    restart: unless-stopped
     environment:
       REGISTRY_PROXY_REMOTEURL: 'https://registry-1.docker.io'
     volumes:
@@ -111,7 +111,7 @@ services:
 
   registry:
     image: registry:2
-    restart: always
+    restart: unless-stopped
     container_name: gitlab-registry
     volumes:
       - 'gitlab-registry-data:/registry'
