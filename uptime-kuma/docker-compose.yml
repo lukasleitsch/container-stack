@@ -1,0 +1,21 @@
+version: '3.3'
+
+services:
+  uptime-kuma:
+    image: louislam/uptime-kuma
+    container_name: uptime-kuma
+    restart: unless-stopped
+    volumes:
+      - ./data:/app/data
+    networks:
+      - proxy
+      - default
+    environment:
+      VIRTUAL_HOST: $HOST
+      LETSENCRYPT_HOST: $HOST
+
+networks:
+  proxy:
+    external:
+      name: nginx-proxy
+      
