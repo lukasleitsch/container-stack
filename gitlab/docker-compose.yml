@@ -77,11 +77,14 @@ services:
       - proxy
 
   runner:
+    image: ghcr.io/lukasleitsch/hetzner-gitlab-runner:latest
     container_name: gitlab-runner
-    image: mawalu/hetzner-gitlab-runner:latest
+    restart: unless-stopped
+    depends_on:
+      - gitlab
     volumes:
-      - "./data/runner:/etc/gitlab-runner"
-      restart: unless-stopped
+      - ./data/runner:/etc/gitlab-runner
+      - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - runner
 
@@ -97,6 +100,8 @@ services:
       MINIO_ACCESS_KEY: $MINIO_ACCESS_KEY
       MINIO_SECRET_KEY: $MINIO_SECRET_KEY
     command: server /export
+    networks:
+      - runner
 
   docker-proxy:
     container_name: gitlab-docker-proxy
