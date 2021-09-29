@@ -1,6 +1,6 @@
 version: '3'
 services:
-  web:
+  gitlab:
     image: 'gitlab/gitlab-ce:latest'
     restart: unless-stopped
     hostname: $HOST
@@ -50,11 +50,12 @@ services:
         nginx['redirect_http_to_https'] = false
         nginx['hsts_max_age'] = 0
 
-        registry_external_url "https://$REGISTRY_HOST"
         gitlab_rails['gitlab_default_projects_features_container_registry'] = false
+        registry['enable'] = false
         gitlab_rails['registry_enabled'] = true
+        gitlab_rails['registry_host'] = "$REGISTRY_HOST"
+        gitlab_rails['registry_api_url'] = "https://$REGISTRY_HOST"
         gitlab_rails['registry_issuer'] = "omnibus-gitlab-issuer"
-        gitlab_rails['registry_path'] = "/var/opt/registry"
 
       # nginx proxy
       VIRTUAL_HOST: $HOST
@@ -66,8 +67,7 @@ services:
       - "gitlab-logs:/var/log/gitlab"
       - "gitlab-data:/var/opt/gitlab"
       - "gitlab-registry-config:/var/opt/gitlab/registry"
-      - "gitlab-registry-data:/var/opt/registry"
-      - "./backups:/mnt/backups"
+      - "$BACKUP_PATH:/mnt/backups"
       - "$CERTS_PATH/$REGISTRY_HOST/fullchain.pem:/etc/gitlab/ssl/$REGISTRY_HOST.crt:ro"
       - "$CERTS_PATH/$REGISTRY_HOST/key.pem:/etc/gitlab/ssl/$REGISTRY_HOST.key:ro"
       - "/etc/timezone:/etc/timezone:ro"
@@ -126,8 +126,9 @@ services:
       REGISTRY_STORAGE_DELETE_ENABLED: 'true'
       # nginx proxy
       VIRTUAL_HOST: $REGISTRY_HOST
-      VIRTUAL_PORT: 5000
       LETSENCRYPT_HOST: $REGISTRY_HOST
+    networks:
+      - proxy
 
 volumes:
   gitlab-data:
