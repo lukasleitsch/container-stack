@@ -5,13 +5,17 @@ services:
     container_name: nginx-proxy
     restart: always
     ports:
-      - '80:80'
-      - '443:443'
+      - target: 80
+        published: 80
+        mode: host
+      - target: 443
+        published: 443
+        mode: host
     labels:
       - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy
     environment:
       - ENABLE_IPV6=true
-      - DISABLE_ACCESS_LOGS=true
+      #- DISABLE_ACCESS_LOGS=true
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ./data/nginx-proxy-certs:/etc/nginx/certs:ro
@@ -20,6 +24,7 @@ services:
       - nginx-webroot:/usr/share/nginx/html
       - dhparam:/etc/nginx/dhparam
       - ./data/nginx/my_proxy.conf:/etc/nginx/conf.d/my_proxy.conf:ro
+      - ${HTPASSWD_PATH}:/etc/nginx/htpasswd:ro
 
   letsencrypt:
     image: nginxproxy/acme-companion
@@ -48,4 +53,5 @@ volumes:
 
 networks:
   default:
-    name: nginx-proxy
+    external:
+      name: nginx-proxy
